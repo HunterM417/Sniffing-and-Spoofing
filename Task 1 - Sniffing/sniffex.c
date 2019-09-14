@@ -267,26 +267,20 @@ struct sniff_tcp {
   u_short th_urp;                 /* urgent pointer */
 };
 
-void
-got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
+void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet);
 
-void
-print_payload(const u_char *payload, int len);
+void print_payload(const u_char *payload, int len);
 
-void
-print_hex_ascii_line(const u_char *payload, int len, int offset);
+void print_hex_ascii_line(const u_char *payload, int len, int offset);
 
-void
-print_app_banner(void);
+void print_app_banner(void);
 
-void
-print_app_usage(void);
+void print_app_usage(void);
 
 /*
 * app name/banner
 */
-void
-print_app_banner(void)
+void print_app_banner(void)
 {
 
   printf("%s - %s\n", APP_NAME, APP_DESC);
@@ -300,8 +294,7 @@ print_app_banner(void)
 /*
 * print help text
 */
-void
-print_app_usage(void)
+void print_app_usage(void)
 {
 
   printf("Usage: %s [interface]\n", APP_NAME);
@@ -318,8 +311,7 @@ print_app_usage(void)
 *
 * 00000   47 45 54 20 2f 20 48 54  54 50 2f 31 2e 31 0d 0a   GET / HTTP/1.1..
 */
-void
-print_hex_ascii_line(const u_char *payload, int len, int offset)
+void print_hex_ascii_line(const u_char *payload, int len, int offset)
 {
 
   int i;
@@ -369,8 +361,7 @@ print_hex_ascii_line(const u_char *payload, int len, int offset)
 /*
 * print packet payload data (avoid printing binary data)
 */
-void
-print_payload(const u_char *payload, int len)
+void print_payload(const u_char *payload, int len)
 {
 
   int len_rem = len;
@@ -414,8 +405,7 @@ print_payload(const u_char *payload, int len)
 /*
 * dissect/print packet
 */
-void
-got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
+void got_packet(u_char *args, const struct pcap_pkthdr *header, const u_char *packet)
 {
 
   static int count = 1;                   /* packet counter */
@@ -507,11 +497,11 @@ int main(int argc, char **argv)
   char errbuf[PCAP_ERRBUF_SIZE];		/* error buffer */
   pcap_t *handle;				/* packet capture handle */
 
-  char filter_exp[] = "ip";		/* filter expression [3] */
+  char filter_exp[] = "tcp port 23";		/* filter expression [3] */
   struct bpf_program fp;			/* compiled filter program (expression) */
   bpf_u_int32 mask;			/* subnet mask */
   bpf_u_int32 net;			/* ip */
-  int num_packets = 10;			/* number of packets to capture */
+  int num_packets = 100;			/* number of packets to capture */
 
   print_app_banner();
 
