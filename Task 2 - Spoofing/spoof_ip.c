@@ -26,8 +26,9 @@ int main (void)
 
   sin.sin_family = AF_INET;
   sin.sin_port = htons (7);
-  sin.sin_addr.s_addr = inet_addr ("10.0.1.13");
+  sin.sin_addr.s_addr = inet_addr ("10.0.1.13"); // Source IP
 
+  // IP Header
   iph.ip_hl = 5;
   iph.ip_v = 4;
   iph.ip_tos = 0;
@@ -37,8 +38,10 @@ int main (void)
   iph.ip_ttl = 255;
   iph.ip_p = 6;
   iph.ip_sum = 0;      /* set it to 0 before computing the actual checksum later */
-  iph.ip_src.s_addr = inet_addr ("101.101.101.101");/* SYN's can be blindly spoofed */
+  iph.ip_src.s_addr = inet_addr ("101.101.101.101"); // Destination IP
   iph.ip_dst.s_addr = sin.sin_addr.s_addr;
+    
+  // TCP Header
   tcph.th_sport = htons (1234);    /* arbitrary port */
   tcph.th_dport = htons (7);
   tcph.th_seq = random ();/* in a SYN packet, the sequence is a random */
@@ -63,6 +66,7 @@ int main (void)
     exit(1);
   }
 
+  // Send datagram
   if (sendto(s, datagram, iph.ip_len, 0, (struct sockaddr *) &sin, sizeof (sin)) < 0)
   {
     perror("Error on send.\n");
