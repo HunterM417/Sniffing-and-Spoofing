@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     struct sockaddr_in sin;
     memset(&sin, 0, sizeof(sin));
     sin.sin_family = AF_INET;
-    sin.sin_addr.s_addr = inet_addr ("10.0.1.13");
+    sin.sin_addr.s_addr = inet_addr ("10.0.1.13"); // SOURCE IP
 
     // Construct IP Header
     u_char* datagram = (u_char *)malloc(60);
@@ -42,8 +42,8 @@ int main(int argc, char **argv)
     iph.ip_ttl = 64;
     iph.ip_p = IPPROTO_ICMP;
     iph.ip_sum = 0x0;
-    iph.ip_src.s_addr = inet_addr("101.101.101.101");
-    iph.ip_dst.s_addr = inet_addr("10.0.1.13");
+    iph.ip_src.s_addr = inet_addr("101.101.101.101"); // SOURCE IP - spoofed.
+    iph.ip_dst.s_addr = inet_addr("10.0.1.13"); // DESTINATION IP
     iph.ip_sum = 0;
     memcpy(datagram, &iph, sizeof(iph));
 
