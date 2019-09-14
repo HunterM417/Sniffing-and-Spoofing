@@ -31,6 +31,7 @@ int main(int argc, char **argv)
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = inet_addr ("10.0.1.13");
 
+    // Construct IP Header
     u_char* datagram = (u_char *)malloc(60);
     iph.ip_hl = 0x5;
     iph.ip_v = 0x4;
@@ -46,6 +47,7 @@ int main(int argc, char **argv)
     iph.ip_sum = 0;
     memcpy(datagram, &iph, sizeof(iph));
 
+    // Construct ICMP Header
     icmp.icmp_type = 8;
     icmp.icmp_code = 0;
     icmp.icmp_id = htons(0);
@@ -61,6 +63,7 @@ int main(int argc, char **argv)
         exit(1);    
     }
     
+    // Send the datagram
     if (sendto(s, datagram, iph.ip_len, 0, (struct sockaddr *)&sin, sizeof(struct sockaddr)) < 0) 
     {
         perror("Failure on Send");
